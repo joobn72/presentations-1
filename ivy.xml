@@ -1,0 +1,14 @@
+<ivy-module version="2.0">
+    <info organisation="com.codingthearchitecture" module="presentations"/>
+    <configurations>
+            <conf name="runtime" description="Runtime dependencies"/>
+            <conf name="test" description="Test dependencies"/>
+        </configurations>
+    <dependencies>
+        <dependency org="org.springframework" name="spring-webmvc" rev="4.0.6.RELEASE" conf="runtime->default" />
+        <dependency org="taglibs" name="standard" rev="1.1.2" conf="runtime->default" />
+        <dependency org="jstl" name="jstl" rev="1.2" conf="runtime->default" />
+
+        <dependency org="junit" name="junit" rev="4.11" conf="test->default" />
+    </dependencies>
+</ivy-module>

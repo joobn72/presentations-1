@@ -1,0 +1,19 @@
+
+<script src="${pageContext.request.contextPath}/static/js/bootstrap.min.js"></script>
+
+<c:if test="${pageContext.request.serverName != 'localhost'}">
+    <!-- start of Google Analytics -->
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        var pageTracker = _gat._getTracker("UA-4643149-1");
+        pageTracker._initData();
+        pageTracker._trackPageview();
+    </script>
+    <!-- end of Google Analytics -->
+</c:if>
+
+</body>
+</html>

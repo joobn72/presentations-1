@@ -1,0 +1,159 @@
+<project name="presentations" default="all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <property name="project.name" value="presentations"/>
+
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="dist.dir" value="${build.dir}/dist"/>
+
+    <property name="src.dir" value="${basedir}/src" />
+    <property name="test.dir" value="${basedir}/test" />
+
+    <property name="web.dir" value="${basedir}/web" />
+
+    <property name="platform.lib.dir" value="${basedir}/lib/platform"/>
+    <property name="test.lib.dir" value="${basedir}/lib/test"/>
+    <property name="runtime.lib.dir" value="${basedir}/lib/runtime"/>
+
+    <property environment="env"/>
+
+    <target name="init" depends="clean">
+        <mkdir dir="${build.dir}"/>
+
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dir}/production-classes"/>
+        <mkdir dir="${build.dir}/test-classes"/>
+
+        <buildnumber />
+        <exec dir="${basedir}" executable="git" outputproperty="git.commit">
+            <arg line=" rev-parse HEAD" />
+        </exec>
+        <touch file="${build.dir}/production-classes/build.properties" />
+        <propertyfile file="${build.dir}/production-classes/build.properties" comment="Build information">
+            <entry key="build.timestamp" type="date" value="now" pattern="dd MMMM yyyy HH:mm:ss z"/>
+            <entry key="build.number" type="int" value="${build.number}" />
+            <entry key="git.commit" type="string" value="${git.commit}" />
+        </propertyfile>
+        <loadproperties srcFile="${build.dir}/production-classes/build.properties"/>
+
+        <echo message="Build number: ${build.number}" />
+
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.dir}/production-classes" debug="yes">
+            <classpath>
+                <fileset dir="${runtime.lib.dir}" includes="*.jar" />
+                <fileset dir="${platform.lib.dir}" includes="*.jar" />
+            </classpath>
+        </javac>
+        <javac srcdir="${test.dir}/unit" destdir="${build.dir}/test-classes" debug="yes">
+            <classpath>
+                <fileset dir="${runtime.lib.dir}" includes="*.jar" />
+                <fileset dir="${platform.lib.dir}" includes="*.jar" />
+                <fileset dir="${test.lib.dir}" includes="*.jar" />
+                <pathelement location="${build.dir}/production-classes" />
+            </classpath>
+        </javac>
+        <javac srcdir="${test.dir}/component" destdir="${build.dir}/test-classes" debug="yes">
+            <classpath>
+                <fileset dir="${runtime.lib.dir}" includes="*.jar" />
+                <fileset dir="${platform.lib.dir}" includes="*.jar" />
+                <fileset dir="${test.lib.dir}" includes="*.jar" />
+                <pathelement location="${build.dir}/production-classes" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="unit-tests" depends="compile">
+        <junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <fileset dir="${runtime.lib.dir}" includes="*.jar" />
+                <fileset dir="${platform.lib.dir}" includes="*.jar" />
+                <fileset dir="${test.lib.dir}" includes="*.jar" />
+                <pathelement location="${build.dir}/production-classes" />
+                <pathelement location="${build.dir}/test-classes"/>
+            </classpath>
+
+            <formatter type="plain"/>
+
+            <batchtest fork="no" todir="${build.dir}">
+                <fileset dir="${test.dir}/unit">
+                    <include name="**/*Tests.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="build" depends="unit-tests">
+        <jar jarfile="${build.dir}/presentations.jar">
+            <fileset dir="${build.dir}/production-classes"/>
+            <fileset dir="${src.dir}" includes="**/*.xml" />
+        </jar>
+    </target>
+
+    <target name="component-tests" depends="build">
+        <junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <fileset dir="${runtime.lib.dir}" includes="*.jar" />
+                <fileset dir="${platform.lib.dir}" includes="*.jar" />
+                <fileset dir="${test.lib.dir}" includes="*.jar" />
+                <pathelement location="${build.dir}/presentations.jar" />
+                <pathelement location="${build.dir}/test-classes"/>
+                <pathelement location="${test.dir}/component" />
+            </classpath>
+
+            <formatter type="plain"/>
+
+            <batchtest fork="no" todir="${build.dir}">
+                <fileset dir="${test.dir}/component">
+                    <include name="**/*Tests.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="dist" depends="build">
+        <copy todir="${dist.dir}">
+            <fileset dir="${web.dir}"/>
+        </copy>
+        <copy todir="${dist.dir}/WEB-INF/lib">
+            <fileset dir="${runtime.lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${build.dir}" includes="presentations.jar" />
+        </copy>
+
+        <zip destfile="${build.dir}/${project.name}-${build.number}.zip">
+            <fileset dir="${dist.dir}"/>
+        </zip>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="publish" depends="dist">
+        <exec executable="scp">
+            <arg value="${build.dir}/${project.name}-${build.number}.zip"/>
+            <arg value="simon@structurizr.com:/tmp/"/>
+        </exec>
+    </target>
+
+    <target name="resolve" description="--> retreive dependencies with ivy">
+        <delete>
+            <fileset dir="${runtime.lib.dir}" excludes="structurizr.jar" />
+            <fileset dir="${test.lib.dir}" includes="*.jar" />
+        </delete>
+
+        <ivy:retrieve conf="runtime" pattern="${runtime.lib.dir}/[artifact].[ext]"/>
+        <ivy:retrieve conf="test" pattern="${test.lib.dir}/[artifact].[ext]"/>
+    </target>
+
+	<target name="clean-cache" description="--> clean the ivy cache">
+		<ivy:cleancache />
+	</target>
+
+    <target name="all" depends="resolve, dist" />
+
+</project>

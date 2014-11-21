@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<%@ page pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<head>
+    <title>${pageTitle} - Coding the Architecture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/favicon.ico">
+    <link href="${pageContext.request.contextPath}/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/static/css/codingthearchitecture.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/static/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <script src="${pageContext.request.contextPath}/static/js/jquery-1.8.2.min.js"></script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/static/js/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="http://www.codingthearchitecture.com"><img src="${pageContext.request.contextPath}/static/img/cta.png" alt="Coding the Architecture" /></a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li><a href="http://www.codingthearchitecture.com/blogentries/1.html">Blog</a></li>
+                        <li><a href="http://www.codingthearchitecture.com/presentations/">Presentations</a></li>
+                        <li><a href="http://leanpub.com/software-architecture-for-developers" target="_blank">Book</a></li>
+                        <li><a href="http://www.codingthearchitecture.com/training/">Training</a></li>
+                    </ul>
+
+                    <form class="navbar-search pull-right" action="http://www.codingthearchitecture.com/search.action">
+                        <input name="query" type="text" value="" class="search-query input-small" placeholder="Search">
+                    </form>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
