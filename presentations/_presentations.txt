@@ -62,6 +62,7 @@ mixit2013-software-architecture-for-developers
 ndclondon2013-agile-software-architecture-sketches
 nnug2010-where-do-you-start
 osloxp2012-the-conflict-between-agile-and-architecture
+perthjavameetup2014-agility-and-the-essence-of-software-architecture
 prognet11-load-testing-for-developers
 qconlondon2012-are-you-a-software-architect
 qconlondon2013-modern-legacy-systems
@@ -106,3 +107,8 @@ wicsa2012-effective-architecture-sketches
 witsoftware2013-agility-and-the-essence-of-software-architecture
 xpdaysukraine2012-the-code-doesnt-tell-the-whole-story
 xpdaysukraine2012-the-frustrated-architect
+yowbrisbane2014-agility-and-the-essence-of-software-architecture
+yowmelbourne2014-agility-and-the-essence-of-software-architecture
+yowmelbourne2014-software-architecture-sketches
+yowsydney2014-agility-and-the-essence-of-software-architecture
+yowsydney2014-software-architecture-sketches
